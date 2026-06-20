@@ -4,25 +4,25 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobSchedulerRegistry extends Thread{
+public class JobSchedulerRegistry extends Thread {
 
     /**
      * Blok statyczny pozwala no inicjację pól statycznych
      */
-    static{
-        instance=new JobSchedulerRegistry();
+    static {
+        instance = new JobSchedulerRegistry();
     }
 
-    private JobSchedulerRegistry(){}
+    private JobSchedulerRegistry() {}
     private static JobSchedulerRegistry instance;
-    public static JobSchedulerRegistry getInstance(){return instance;}
+    public static JobSchedulerRegistry getInstance() { return instance; }
 
 
-//    List<JobScheduler> schedulers = new ArrayList<>();
+    List<JobScheduler> schedulers = new ArrayList<>();
 
-//    public void register(JobScheduler scheduler) {
-//        schedulers.add(scheduler);
-//    }
+    public void register(JobScheduler scheduler) {
+        schedulers.add(scheduler);
+    }
 
     @Override
     public void run() {
@@ -30,16 +30,16 @@ public class JobSchedulerRegistry extends Thread{
         /**
          * Działamy w pętli nieskończonej
          */
-        while(true){
+        while (true) {
             /**
              * tworzę event (zdarzenie) zmiany czasu
              */
-//            TimeEvent event = new TimeEvent();
-//            event.setTime(LocalDateTime.now());
+            TimeEvent event = new TimeEvent();
+            event.setTime(LocalDateTime.now());
             /**
              * Przechodzę przez wszystkie zadeklarowane harmonogramy (JobSchedulery)
              */
-//            for (JobScheduler scheduler : new ArrayList<>(schedulers)){
+            for (JobScheduler scheduler : new ArrayList<>(schedulers)) {
                 /**
                  * każdy harmonogram (JobScheduler) jest obserwatorem
                  * na zdarzenia zmiany czasu.
@@ -48,13 +48,12 @@ public class JobSchedulerRegistry extends Thread{
                  * SimpleJobScheduler tak oby, scheduler był 'świadomy'
                  * jaka godzina wybiła i w razie potrzeby uruchomił joba na oddzielnym wątku
                  */
-//                scheduler.listenTo(event);
-//            }
-            try{
-                    Thread.sleep(100);
+                scheduler.listenTo(event);
             }
-            catch(Exception ex){
-                    ex.printStackTrace();
+            try {
+                Thread.sleep(100);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     }
